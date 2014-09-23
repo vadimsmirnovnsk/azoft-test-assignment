@@ -2,7 +2,7 @@
 //  TAAppDelegate.h
 //  TestAssignment
 //
-//  Created by Wadim on 22/09/14.
+//  Created by Vadim Smirnov on 22/09/14.
 //  Copyright (c) 2014 Smirnov Electronics. All rights reserved.
 //
 

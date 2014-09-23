@@ -2,11 +2,12 @@
 //  TAAppDelegate.m
 //  TestAssignment
 //
-//  Created by Wadim on 22/09/14.
+//  Created by Vadim Smirnov on 22/09/14.
 //  Copyright (c) 2014 Smirnov Electronics. All rights reserved.
 //
 
 #import "TAAppDelegate.h"
+#import "TAVehicle.h"
 
 @implementation TAAppDelegate
 
@@ -15,6 +16,16 @@
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     // Override point for customization after application launch.
     self.window.backgroundColor = [UIColor whiteColor];
+    
+    TABike *bike = [TAVehicle bikeWithManufacturer:@"Kawa" model:@"ZX_R" horsePower:@(150) images:nil bikeType:@"Grass Bike"];
+    NSLog(@"%@", bike);
+    
+    TATruck *truck = [TAVehicle truckWithManufacturer:@"MA3" model:@"Super MA3" horsePower:@(500) images:nil handDrive:@"Left" seatsCount:@(3) carryingCapacityKg:@(10000)];
+    NSLog(@"%@", truck);
+    
+    TACar *car = [TAVehicle carWithManufacturer:@"Porsche" model:@"997tt 911 Turbo" horsePower:@(480) images:nil handDrive:@"left" seatsCount:@(4) doors:@(2)];
+    NSLog(@"%@", car);
+    
     [self.window makeKeyAndVisible];
     return YES;
 }
