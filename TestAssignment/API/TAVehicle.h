@@ -8,6 +8,34 @@
 
 #import <Foundation/Foundation.h>
 
+
+// Vehicle Types
+static NSString *const kVehicleTypeCar = @"car";
+static NSString *const kVehicleTypeTruck = @"truck";
+static NSString *const kVehicleTypeBike = @"bike";
+
+
+// Vehicle Common Keys
+static NSString *const kVehicleTypeKey = @"type";
+static NSString *const kManufacturerKey = @"manufacturer";
+static NSString *const kModelKey = @"model";
+static NSString *const kHorsePowerKey = @"horsePower";
+static NSString *const kImagesKey = @"images";
+
+// Auto Common Keys
+static NSString *const kHandDriveKey = @"handDrive";
+static NSString *const kSeatsCountKey = @"seatsCount";
+
+// Car Keys
+static NSString *const kDoorsKey = @"doors";
+
+// Truck Keys
+static NSString *const kCarryingCapacityKgKey = @"carryingCapacityKg";
+
+// Bike Keys
+static NSString *const kBikeTypeKey = @"bikeType";
+
+
 @class TACar;
 @class TABike;
 @class TATruck;
@@ -21,6 +49,7 @@
 @property (nonatomic, copy) NSString *model;
 @property (nonatomic, copy) NSNumber */* with NSUInteger */horsePower;
 @property (nonatomic, readonly) NSArray */* with NSStrings */images;
+@property (nonatomic, copy) NSString *type;
 
 + (TACar *)carWithManufacturer:(NSString *)manufacturer model:(NSString *)model
     horsePower:(NSNumber *)horsePower images:(NSArray *)imagesNames
@@ -35,6 +64,8 @@
 + (TABike *)bikeWithManufacturer:(NSString *)manufacturer model:(NSString *)model
     horsePower:(NSNumber *)horsePower images:(NSArray *)imagesNames
     bikeType:(NSString *)bikeType;
+
++ (id)vehicleWithParameters:(NSDictionary *)parameters;
 
 @end
 
@@ -51,7 +82,7 @@
 
 #pragma mark - TACar Interface
 
-@interface TACar : TAAuto
+@interface TACar : TAAuto <NSCopying>
 
 @property (nonatomic, strong) NSNumber */* with NSUInteger */doors;
 
@@ -60,7 +91,7 @@
 
 #pragma mark - TATruck Interface
 
-@interface TATruck : TAAuto
+@interface TATruck : TAAuto <NSCopying>
 
 @property (nonatomic, strong) NSNumber */* with NSUInteger */carryingCapacityKg;
 
@@ -69,7 +100,7 @@
 
 #pragma mark - TABike Interface
 
-@interface TABike : TAVehicle
+@interface TABike : TAVehicle <NSCopying>
 
 @property (nonatomic, copy) NSString *bikeType;
 

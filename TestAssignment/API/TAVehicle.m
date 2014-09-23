@@ -44,6 +44,7 @@
     self = [super initWithManufacturer:manufacturer model:model horsePower:horsePower images:imagesNames];
     if (self) {
         _bikeType = [bikeType copy];
+        self.type = kVehicleTypeBike;
     }
     return self;
 }
@@ -70,6 +71,15 @@
     [super dealloc];
 }
 
+#pragma mark NSCopying Protocol Methods
+- (id)copyWithZone:(NSZone *)zone
+{
+    TABike *newBike = [[[[self class]allocWithZone:zone] initWithManufacturer:self.manufacturer
+        model:self.model horsePower:self.horsePower images:self.images
+        bikeType:self.bikeType] retain];
+    return [newBike autorelease];
+}
+
 @end
 
 
@@ -86,6 +96,7 @@
     self = [super initWithManufacturer:manufacturer model:model horsePower:horsePower images:imagesNames handDrive:handDrive seatsCount:seatsCount];
     if (self) {
         _carryingCapacityKg = [carryingCapacityKg copy];
+        self.type = kVehicleTypeTruck;
     }
     return self;
 }
@@ -115,6 +126,16 @@
     [super dealloc];
 }
 
+#pragma mark NSCopying Protocol Methods
+- (id)copyWithZone:(NSZone *)zone
+{
+    TATruck *newTruck = [[[[self class]allocWithZone:zone] initWithManufacturer:self.manufacturer
+        model:self.model horsePower:self.horsePower images:self.images
+        handDrive:self.handDrive seatsCount:self.seatsCount
+        carryingCapacityKg:self.carryingCapacityKg] retain];
+    return [newTruck autorelease];
+}
+
 @end
 
 
@@ -131,6 +152,7 @@
     self = [super initWithManufacturer:manufacturer model:model horsePower:horsePower images:imagesNames handDrive:handDrive seatsCount:seatsCount];
     if (self) {
         _doors = [doors copy];
+        self.type = kVehicleTypeCar;
     }
     return self;
 }
@@ -158,6 +180,15 @@
     [_doors release];
     _doors = nil;
     [super dealloc];
+}
+
+#pragma mark NSCopying Protocol Methods
+- (id)copyWithZone:(NSZone *)zone
+{
+    TACar *newCar = [[[[self class]allocWithZone:zone] initWithManufacturer:self.manufacturer
+        model:self.model horsePower:self.horsePower images:self.images
+        handDrive:self.handDrive seatsCount:self.seatsCount doors:self.doors] retain];
+    return [newCar autorelease];
 }
 
 @end
@@ -207,6 +238,40 @@
 @implementation TAVehicle
 
 #pragma mark Init and Create methods
++ (id)vehicleWithParameters:(NSDictionary *)parameters
+{
+    NSString *vehicleType = parameters[kVehicleTypeKey];
+    if (vehicleType) {
+        if ([vehicleType isEqualToString:kVehicleTypeBike]) {
+            return [self bikeWithManufacturer:parameters[kManufacturerKey]
+                model:parameters[kModelKey]
+                horsePower:parameters[kHorsePowerKey]
+                images:parameters[kImagesKey]
+                bikeType:parameters[kBikeTypeKey]];
+        }
+        else if ([vehicleType isEqualToString:kVehicleTypeCar]) {
+            return [self carWithManufacturer:parameters[kManufacturerKey]
+            model:parameters[kModelKey]
+            horsePower:parameters[kHorsePowerKey]
+            images:parameters[kImagesKey]
+            handDrive:parameters[kHandDriveKey]
+            seatsCount:parameters[kSeatsCountKey]
+            doors:parameters[kDoorsKey]];
+        }
+        else if ([vehicleType isEqualToString:kVehicleTypeTruck]) {
+            return [self truckWithManufacturer:parameters[kManufacturerKey]
+            model:parameters[kModelKey]
+            horsePower:parameters[kHorsePowerKey]
+            images:parameters[kImagesKey]
+            handDrive:parameters[kHandDriveKey]
+            seatsCount:parameters[kSeatsCountKey]
+            carryingCapacityKg:parameters[kCarryingCapacityKgKey]];
+        }
+        else return nil;
+    }
+    else return nil;
+}
+
 + (TACar *)carWithManufacturer:(NSString *)manufacturer model:(NSString *)model
     horsePower:(NSNumber *)horsePower images:(NSArray *)imagesNames
     handDrive:(NSString *)handDrive seatsCount:(NSNumber *)seatsCount
@@ -269,6 +334,8 @@
     _model = nil;
     [_horsePower release];
     _horsePower = nil;
+    [_type release];
+    _type = nil;
     [super dealloc];
 }
 

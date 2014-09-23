@@ -8,23 +8,32 @@
 
 #import "TAAppDelegate.h"
 #import "TAVehicle.h"
+#import "TAServerAPIController.h"
 
 @implementation TAAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    self.window = [[[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]] autorelease];
     // Override point for customization after application launch.
     self.window.backgroundColor = [UIColor whiteColor];
     
-    TABike *bike = [TAVehicle bikeWithManufacturer:@"Kawa" model:@"ZX_R" horsePower:@(150) images:nil bikeType:@"Grass Bike"];
-    NSLog(@"%@", bike);
+    [[TAServerAPIController sharedController] getJSONWithSuccessBlock:^(NSDictionary *jsonDictionary) {
+        if (jsonDictionary[@"vehicles"]) {
+            NSArray *vehicles = jsonDictionary[@"vehicles"];
+            for (NSDictionary *vehicle in vehicles) {
+                if (vehicle[kVehicleTypeKey]) {
+                    NSLog(@"%@", [TAVehicle vehicleWithParameters:vehicle]);
+                }
+            }
+        }
+        
+    } failureBlock:^(NSError *error) {
+        if (!!error) {
+            NSLog(@"%@", error.userInfo);
+        }
+    }];
     
-    TATruck *truck = [TAVehicle truckWithManufacturer:@"MA3" model:@"Super MA3" horsePower:@(500) images:nil handDrive:@"Left" seatsCount:@(3) carryingCapacityKg:@(10000)];
-    NSLog(@"%@", truck);
-    
-    TACar *car = [TAVehicle carWithManufacturer:@"Porsche" model:@"997tt 911 Turbo" horsePower:@(480) images:nil handDrive:@"left" seatsCount:@(4) doors:@(2)];
-    NSLog(@"%@", car);
     
     [self.window makeKeyAndVisible];
     return YES;

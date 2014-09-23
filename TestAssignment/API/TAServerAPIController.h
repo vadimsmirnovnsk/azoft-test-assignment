@@ -10,4 +10,9 @@
 
 @interface TAServerAPIController : NSObject
 
++ (instancetype)sharedController;
+
+- (void)getJSONWithSuccessBlock:(void(^)(NSDictionary *))success
+    failureBlock:(void(^)(NSError *))failure;
+
 @end
