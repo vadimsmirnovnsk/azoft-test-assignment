@@ -7,10 +7,14 @@
 //
 
 #import "TAAppDelegate.h"
-#import "TAVehicle.h"
-#import "TAServerAPIController.h"
-#import <AFNetworking/UIImageView+AFNetworking.h>
-#import "TAPreferences.h"
+#import "TAVehiclesVC.h"
+
+@interface TAAppDelegate ()
+
+@property (nonatomic, strong) TAVehiclesVC *rootVC;
+
+@end
+
 
 @implementation TAAppDelegate
 
@@ -18,29 +22,11 @@
 {
     self.window = [[[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]] autorelease];
     // Override point for customization after application launch.
+    _rootVC = [[[TAVehiclesVC alloc] init] autorelease];
+    self.window.rootViewController = _rootVC;
+    [self.window addSubview:self.rootVC.view];
     self.window.backgroundColor = [UIColor whiteColor];
-    
-//    __unsafe_unretained typeof(self) blockSelf = self;
-
-    if (![[TAPreferences standardPreferences]isDownloaded]) {
-        [[TAServerAPIController sharedController] getJSONWithSuccessBlock:^(NSDictionary *jsonDictionary) {
-            if (jsonDictionary[@"vehicles"]) {
-                NSArray *vehicles = jsonDictionary[@"vehicles"];
-                for (NSDictionary *vehicle in vehicles) {
-                    if (vehicle[kVehicleTypeKey]) {
-                        NSLog(@"%@", [TAVehicle vehicleWithParameters:vehicle]);
-                        [TAPreferences standardPreferences].downloaded = YES;
-                    }
-                }
-            }
-            
-        } failureBlock:^(NSError *error) {
-            if (!!error) {
-                NSLog(@"%@", error.userInfo);
-            }
-        }];
-    }
-
+    [self.window makeKeyAndVisible];
     return YES;
 }
 
@@ -69,6 +55,13 @@
 - (void)applicationWillTerminate:(UIApplication *)application
 {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+}
+
+- (void)dealloc
+{
+    [_rootVC release];
+    _rootVC = nil;
+    [super dealloc];
 }
 
 @end
