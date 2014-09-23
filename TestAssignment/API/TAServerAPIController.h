@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
+static NSString *const kBaseAPIURL = @"http://azcltd.com/testTask/iOS/";
+
 @interface TAServerAPIController : NSObject
 
 + (instancetype)sharedController;

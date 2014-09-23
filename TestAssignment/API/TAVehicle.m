@@ -129,7 +129,8 @@
 #pragma mark NSCopying Protocol Methods
 - (id)copyWithZone:(NSZone *)zone
 {
-    TATruck *newTruck = [[[[self class]allocWithZone:zone] initWithManufacturer:self.manufacturer
+    TATruck *newTruck =
+        [[[[self class]allocWithZone:zone] initWithManufacturer:self.manufacturer
         model:self.model horsePower:self.horsePower images:self.images
         handDrive:self.handDrive seatsCount:self.seatsCount
         carryingCapacityKg:self.carryingCapacityKg] retain];
@@ -149,7 +150,8 @@
     handDrive:(NSString *)handDrive seatsCount:(NSNumber *)seatsCount
     doors:(NSNumber *)doors
 {
-    self = [super initWithManufacturer:manufacturer model:model horsePower:horsePower images:imagesNames handDrive:handDrive seatsCount:seatsCount];
+    self = [super initWithManufacturer:manufacturer model:model horsePower:horsePower
+        images:imagesNames handDrive:handDrive seatsCount:seatsCount];
     if (self) {
         _doors = [doors copy];
         self.type = kVehicleTypeCar;
@@ -185,7 +187,8 @@
 #pragma mark NSCopying Protocol Methods
 - (id)copyWithZone:(NSZone *)zone
 {
-    TACar *newCar = [[[[self class]allocWithZone:zone] initWithManufacturer:self.manufacturer
+    TACar *newCar =
+        [[[[self class]allocWithZone:zone] initWithManufacturer:self.manufacturer
         model:self.model horsePower:self.horsePower images:self.images
         handDrive:self.handDrive seatsCount:self.seatsCount doors:self.doors] retain];
     return [newCar autorelease];
@@ -237,7 +240,7 @@
 
 @implementation TAVehicle
 
-#pragma mark Init and Create methods
+#pragma mark Init and Create Methods
 + (id)vehicleWithParameters:(NSDictionary *)parameters
 {
     NSString *vehicleType = parameters[kVehicleTypeKey];
@@ -317,7 +320,7 @@
 - (instancetype)init
 {
     return [self initWithManufacturer:@"Unknown manufacturer" model:@"Unknown model"
-            horsePower:@(0) images:nil];
+                horsePower:@(0) images:nil];
 }
 
 #pragma mark Getters
@@ -326,6 +329,7 @@
     return [[self.mutableImages copy] autorelease];
 }
 
+#pragma mark MRR
 - (void)dealloc
 {
     [_manufacturer release];

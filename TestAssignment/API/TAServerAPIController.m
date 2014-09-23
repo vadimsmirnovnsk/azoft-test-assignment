@@ -9,23 +9,28 @@
 #import "TAServerAPIController.h"
 #import <AFNetworking/AFNetworking.h>
 
-static NSString *const kBaseAPIURL = @"http://azcltd.com/testTask/iOS/";
+
+#pragma mark - TAServerAPIController Extension
 
 @interface TAServerAPIController ()
 @property (strong, nonatomic) AFHTTPRequestOperationManager *requestManager;
 @end
 
+
+#pragma mark - TAServerAPIController Implementation
+
 @implementation TAServerAPIController
 
+#pragma mark Inits and Create Methods
 - (instancetype)init
 {
     self = [super init];
     if (self) {
         NSURL *apiURL = [NSURL URLWithString:kBaseAPIURL];
-        self.requestManager = [[[AFHTTPRequestOperationManager alloc]
-            initWithBaseURL:apiURL] autorelease];
+        self.requestManager =
+            [[[AFHTTPRequestOperationManager alloc] initWithBaseURL:apiURL] autorelease];
         self.requestManager.responseSerializer.acceptableContentTypes =
-            [NSSet setWithObject:@"text/plain"];
+            [NSSet setWithObjects:@"image/jpeg", @"text/plain", nil];
     }
     return self;
 }
@@ -40,6 +45,7 @@ static NSString *const kBaseAPIURL = @"http://azcltd.com/testTask/iOS/";
     return instance;
 }
 
+#pragma mark Public Methods
 - (void)getJSONWithSuccessBlock:(void(^)(NSDictionary *))success
     failureBlock:(void(^)(NSError *))failure
 {
@@ -53,9 +59,9 @@ static NSString *const kBaseAPIURL = @"http://azcltd.com/testTask/iOS/";
         failure:^(AFHTTPRequestOperation *operation, NSError *error) {
             failure(error);
         }];
-
 }
 
+#pragma mark MRR
 - (void)dealloc
 {
     [_requestManager release];

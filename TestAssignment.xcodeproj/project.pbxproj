@@ -10,6 +10,7 @@
 		32A17C90F16A454197B583EC /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BED55B030D064497931B8F39 /* libPods.a */; };
 		CE33B3BC19D0463400828CB0 /* TAVehicle.m in Sources */ = {isa = PBXBuildFile; fileRef = CE33B3BB19D0463400828CB0 /* TAVehicle.m */; };
 		CE33B3BF19D12F4200828CB0 /* TAServerAPIController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE33B3BE19D12F4200828CB0 /* TAServerAPIController.m */; };
+		CE33B3C219D164C900828CB0 /* TAPreferences.m in Sources */ = {isa = PBXBuildFile; fileRef = CE33B3C119D164C900828CB0 /* TAPreferences.m */; };
 		CEA20E4619D0014800F30661 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CEA20E4519D0014800F30661 /* Foundation.framework */; };
 		CEA20E4819D0014800F30661 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CEA20E4719D0014800F30661 /* CoreGraphics.framework */; };
 		CEA20E4A19D0014800F30661 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CEA20E4919D0014800F30661 /* UIKit.framework */; };
@@ -41,6 +42,8 @@
 		CE33B3BB19D0463400828CB0 /* TAVehicle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TAVehicle.m; path = API/TAVehicle.m; sourceTree = "<group>"; };
 		CE33B3BD19D12F4200828CB0 /* TAServerAPIController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TAServerAPIController.h; path = API/TAServerAPIController.h; sourceTree = "<group>"; };
 		CE33B3BE19D12F4200828CB0 /* TAServerAPIController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TAServerAPIController.m; path = API/TAServerAPIController.m; sourceTree = "<group>"; };
+		CE33B3C019D164C900828CB0 /* TAPreferences.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TAPreferences.h; path = API/TAPreferences.h; sourceTree = "<group>"; };
+		CE33B3C119D164C900828CB0 /* TAPreferences.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TAPreferences.m; path = API/TAPreferences.m; sourceTree = "<group>"; };
 		CEA20E4219D0014800F30661 /* TestAssignment.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TestAssignment.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CEA20E4519D0014800F30661 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		CEA20E4719D0014800F30661 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -91,6 +94,8 @@
 				CE33B3BB19D0463400828CB0 /* TAVehicle.m */,
 				CE33B3BD19D12F4200828CB0 /* TAServerAPIController.h */,
 				CE33B3BE19D12F4200828CB0 /* TAServerAPIController.m */,
+				CE33B3C019D164C900828CB0 /* TAPreferences.h */,
+				CE33B3C119D164C900828CB0 /* TAPreferences.m */,
 			);
 			name = API;
 			sourceTree = "<group>";
@@ -311,6 +316,7 @@
 				CEA20E5219D0014800F30661 /* main.m in Sources */,
 				CEA20E5619D0014800F30661 /* TAAppDelegate.m in Sources */,
 				CE33B3BC19D0463400828CB0 /* TAVehicle.m in Sources */,
+				CE33B3C219D164C900828CB0 /* TAPreferences.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
