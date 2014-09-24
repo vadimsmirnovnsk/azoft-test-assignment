@@ -11,9 +11,13 @@
 #import "TAServerAPIController.h"
 #import <AFNetworking/UIImageView+AFNetworking.h>
 #import "TAPreferences.h"
+#import "TAEditVehicleVC.h"
 
 
 static NSString *const userCellId = @"UserCellId";
+static NSString *const kSectionTitleCars = @"Cars";
+static NSString *const kSectionTitleBikes = @"Bikes";
+static NSString *const kSectionTitleTrucks = @"Trucks";
 
 typedef NS_ENUM(NSUInteger, SectionType) {
     SectionTypeCars = 0,
@@ -24,7 +28,7 @@ typedef NS_ENUM(NSUInteger, SectionType) {
 
 #pragma mark - TAVehiclesVC Extension
 
-@interface TAVehiclesVC () <UITableViewDataSource, UITableViewDelegate>
+@interface TAVehiclesVC () <UITableViewDataSource, UITableViewDelegate, TAEditVehicleVCDelegate>
 
 @property (nonatomic, copy) NSMutableArray *mutableVehicles;
 @property (nonatomic, copy) NSMutableArray *mutableCars;
@@ -145,10 +149,59 @@ typedef NS_ENUM(NSUInteger, SectionType) {
 {
 }
 
+#pragma mark TAEditVehicleVCDelegate Methods
+- (void) editVehicleVC:(TAEditVehicleVC *)sender didFinishedWithVehicle:(id)vehicle
+{
+    if (vehicle) {
+    
+    }
+    [self dismissViewControllerAnimated:YES completion:NULL];
+}
+
+#pragma mark UITableViewDelegate Methods
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    TAVehicle *vehicle = nil;
+    if (indexPath.section == SectionTypeCars) {
+        vehicle = [self.mutableCars objectAtIndex:indexPath.row];
+    }
+    else if (indexPath.section == SectionTypeBikes) {
+        vehicle = [self.mutableBikes objectAtIndex:indexPath.row];
+    }
+    else if (indexPath.section == SectionTypeTrucks) {
+        vehicle = [self.mutableTrucks objectAtIndex:indexPath.row];
+    }
+
+    TAEditVehicleVC *const editVC =
+        [[TAEditVehicleVC alloc] initWithVehicle:vehicle];
+    editVC.delegate = self;
+    
+    UINavigationController *const navigationController =
+        [[UINavigationController alloc] initWithRootViewController:editVC];
+    [self presentViewController:navigationController animated:YES completion:NULL];
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    [editVC release];
+    [navigationController release];
+}
+
 #pragma mark UITableViewDataSource Methods
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     return 3;
+}
+
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
+{
+if (section == SectionTypeCars) {
+        return [kSectionTitleCars autorelease];
+    }
+    else if (section == SectionTypeBikes) {
+        return [kSectionTitleBikes autorelease];
+    }
+    else if (section == SectionTypeTrucks) {
+        return [kSectionTitleTrucks autorelease];
+    }
+    else return nil;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
