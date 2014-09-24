@@ -21,7 +21,6 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     self.window = [[[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]] autorelease];
-    // Override point for customization after application launch.
     _rootVC = [[[TAVehiclesVC alloc] init] autorelease];
     self.window.rootViewController = _rootVC;
     [self.window addSubview:self.rootVC.view];

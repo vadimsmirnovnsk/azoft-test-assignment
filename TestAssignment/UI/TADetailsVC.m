@@ -45,9 +45,15 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    
     self.handDriveField.placeholder = self.vehicle[kHandDriveKey];
+    self.handDriveField.delegate = self.textFieldDelegate;
+    
     self.seatsCountField.placeholder = [self.vehicle[kSeatsCountKey] stringValue];
+    self.seatsCountField.delegate = self.textFieldDelegate;
+    
     self.doorsField.placeholder = [self.vehicle[kDoorsKey] stringValue];
+    self.doorsField.delegate = self.textFieldDelegate;
 }
 
 - (void)didReceiveMemoryWarning
@@ -91,7 +97,9 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    
     self.bikeTypeField.placeholder = self.vehicle[kBikeTypeKey];
+    self.bikeTypeField.delegate = self.textFieldDelegate;
 }
 
 - (void)didReceiveMemoryWarning
@@ -137,9 +145,15 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    
     self.handDriveField.placeholder = self.vehicle[kHandDriveKey];
+    self.handDriveField.delegate = self.textFieldDelegate;
+    
     self.seatsCountField.placeholder = [self.vehicle[kSeatsCountKey] stringValue];
+    self.seatsCountField.delegate = self.textFieldDelegate;
+    
     self.carryingCapacityKgField.placeholder = [self.vehicle[kCarryingCapacityKgKey] stringValue];
+    self.carryingCapacityKgField.delegate = self.textFieldDelegate;
 }
 
 - (void)didReceiveMemoryWarning

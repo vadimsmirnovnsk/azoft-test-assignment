@@ -19,6 +19,9 @@
 		CE33B3D819D3356000828CB0 /* TACarVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE33B3D619D3356000828CB0 /* TACarVC.xib */; };
 		CE33B3DA19D33D6800828CB0 /* TABikeVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE33B3D919D33D6800828CB0 /* TABikeVC.xib */; };
 		CE33B3DC19D33D7A00828CB0 /* TATruckVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE33B3DB19D33D7A00828CB0 /* TATruckVC.xib */; };
+		CE33B3E119D34AD300828CB0 /* loading_placeholder.png in Resources */ = {isa = PBXBuildFile; fileRef = CE33B3DF19D34AD300828CB0 /* loading_placeholder.png */; };
+		CE33B3E219D34AD300828CB0 /* loading_placeholder@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CE33B3E019D34AD300828CB0 /* loading_placeholder@2x.png */; };
+		CE33B3E519D353A800828CB0 /* TAGalleryVC.m in Sources */ = {isa = PBXBuildFile; fileRef = CE33B3E419D353A800828CB0 /* TAGalleryVC.m */; };
 		CEA20E4619D0014800F30661 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CEA20E4519D0014800F30661 /* Foundation.framework */; };
 		CEA20E4819D0014800F30661 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CEA20E4719D0014800F30661 /* CoreGraphics.framework */; };
 		CEA20E4A19D0014800F30661 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CEA20E4919D0014800F30661 /* UIKit.framework */; };
@@ -63,6 +66,10 @@
 		CE33B3D619D3356000828CB0 /* TACarVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = TACarVC.xib; path = UI/TACarVC.xib; sourceTree = "<group>"; };
 		CE33B3D919D33D6800828CB0 /* TABikeVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TABikeVC.xib; sourceTree = "<group>"; };
 		CE33B3DB19D33D7A00828CB0 /* TATruckVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TATruckVC.xib; sourceTree = "<group>"; };
+		CE33B3DF19D34AD300828CB0 /* loading_placeholder.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = loading_placeholder.png; path = Resources/Images/loading_placeholder.png; sourceTree = "<group>"; };
+		CE33B3E019D34AD300828CB0 /* loading_placeholder@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "loading_placeholder@2x.png"; path = "Resources/Images/loading_placeholder@2x.png"; sourceTree = "<group>"; };
+		CE33B3E319D353A800828CB0 /* TAGalleryVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TAGalleryVC.h; path = UI/TAGalleryVC.h; sourceTree = "<group>"; };
+		CE33B3E419D353A800828CB0 /* TAGalleryVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TAGalleryVC.m; path = UI/TAGalleryVC.m; sourceTree = "<group>"; };
 		CEA20E4219D0014800F30661 /* TestAssignment.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TestAssignment.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CEA20E4519D0014800F30661 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		CEA20E4719D0014800F30661 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -128,6 +135,8 @@
 				CE33B3C819D1E2A200828CB0 /* TAEditVehicleVC.h */,
 				CE33B3C919D1E2A200828CB0 /* TAEditVehicleVC.m */,
 				CE33B3CA19D1E2A200828CB0 /* TAEditVehicleVC.xib */,
+				CE33B3E319D353A800828CB0 /* TAGalleryVC.h */,
+				CE33B3E419D353A800828CB0 /* TAGalleryVC.m */,
 				CE33B3D419D3356000828CB0 /* TADetailsVC.h */,
 				CE33B3D519D3356000828CB0 /* TADetailsVC.m */,
 				CE33B3D619D3356000828CB0 /* TACarVC.xib */,
@@ -135,6 +144,23 @@
 				CE33B3DB19D33D7A00828CB0 /* TATruckVC.xib */,
 			);
 			name = UI;
+			sourceTree = "<group>";
+		};
+		CE33B3DD19D34ABB00828CB0 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				CE33B3DE19D34AC700828CB0 /* Images */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
+		CE33B3DE19D34AC700828CB0 /* Images */ = {
+			isa = PBXGroup;
+			children = (
+				CE33B3DF19D34AD300828CB0 /* loading_placeholder.png */,
+				CE33B3E019D34AD300828CB0 /* loading_placeholder@2x.png */,
+			);
+			name = Images;
 			sourceTree = "<group>";
 		};
 		CEA20E3919D0014700F30661 = {
@@ -185,6 +211,7 @@
 		CEA20E4C19D0014800F30661 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				CE33B3DD19D34ABB00828CB0 /* Resources */,
 				CEA20E4D19D0014800F30661 /* TestAssignment-Info.plist */,
 				CEA20E4E19D0014800F30661 /* InfoPlist.strings */,
 				CEA20E5119D0014800F30661 /* main.m */,
@@ -291,8 +318,10 @@
 			files = (
 				CE33B3CC19D1E2A200828CB0 /* TAEditVehicleVC.xib in Resources */,
 				CEA20E5019D0014800F30661 /* InfoPlist.strings in Resources */,
+				CE33B3E119D34AD300828CB0 /* loading_placeholder.png in Resources */,
 				CE33B3DA19D33D6800828CB0 /* TABikeVC.xib in Resources */,
 				CE33B3D819D3356000828CB0 /* TACarVC.xib in Resources */,
+				CE33B3E219D34AD300828CB0 /* loading_placeholder@2x.png in Resources */,
 				CE33B3DC19D33D7A00828CB0 /* TATruckVC.xib in Resources */,
 				CEA20E5819D0014800F30661 /* Images.xcassets in Resources */,
 				CE33B3C719D1764800828CB0 /* TAVehiclesVC.xib in Resources */,
@@ -349,6 +378,7 @@
 			files = (
 				CE33B3D719D3356000828CB0 /* TADetailsVC.m in Sources */,
 				CE33B3C619D1764800828CB0 /* TAVehiclesVC.m in Sources */,
+				CE33B3E519D353A800828CB0 /* TAGalleryVC.m in Sources */,
 				CE33B3BF19D12F4200828CB0 /* TAServerAPIController.m in Sources */,
 				CEA20E5219D0014800F30661 /* main.m in Sources */,
 				CEA20E5619D0014800F30661 /* TAAppDelegate.m in Sources */,
