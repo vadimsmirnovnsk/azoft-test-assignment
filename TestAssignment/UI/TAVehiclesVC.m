@@ -19,6 +19,9 @@ static NSString *const kSectionTitleCars = @"Cars";
 static NSString *const kSectionTitleBikes = @"Bikes";
 static NSString *const kSectionTitleTrucks = @"Trucks";
 
+static NSString *const kReorderTitleNormal = @"Reorder";
+static NSString *const kReorderTitleSelected = @"Done!";
+
 
 #pragma mark - TAVehiclesVC Extension
 
@@ -81,15 +84,13 @@ static NSString *const kSectionTitleTrucks = @"Trucks";
         // Get json from server
         __unsafe_unretained typeof(self) blockSelf = self;
         [[TAServerAPIController sharedController] getJSONWithSuccessBlock:^(NSDictionary *jsonDictionary) {
-            @autoreleasepool {
-                if (jsonDictionary[@"vehicles"]) {
-                    [TAPreferences standardPreferences].downloaded = YES;
-                    [TAPreferences standardPreferences].vehicles = jsonDictionary[@"vehicles"];
-                    blockSelf.mutableVehicles =
-                        [[[TAPreferences standardPreferences].vehicles mutableCopy] autorelease];
-                    [grayView removeFromSuperview];
-                    [blockSelf sortVehicles];
-                }
+            if (jsonDictionary[@"vehicles"]) {
+                [TAPreferences standardPreferences].downloaded = YES;
+                [TAPreferences standardPreferences].vehicles = jsonDictionary[@"vehicles"];
+                blockSelf.mutableVehicles =
+                    [[[TAPreferences standardPreferences].vehicles mutableCopy] autorelease];
+                [grayView removeFromSuperview];
+                [blockSelf sortVehicles];
             }
         } failureBlock:^(NSError *error) {
             if (!!error) {
@@ -146,7 +147,22 @@ static NSString *const kSectionTitleTrucks = @"Trucks";
 
 - (IBAction)didTouchOptionsBarButtonItem:(UIBarButtonItem *)sender
 {
+    [TAPreferences standardPreferences].downloaded = NO;
+    [self loadVehicles];
 }
+
+- (IBAction)didTouchReorderBarButtonItem:(UIBarButtonItem *)sender
+{
+    if ([sender.title isEqualToString:kReorderTitleSelected]) {
+        [self.tableView setEditing:NO animated:NO];
+        [sender setTitle:kReorderTitleNormal];
+    }
+    else {
+        [self.tableView setEditing:YES animated:YES];
+        [sender setTitle:kReorderTitleSelected];
+    }
+}
+
 
 #pragma mark TAEditVehicleVCDelegate Methods
 - (void) editVehicleVC:(TAEditVehicleVC *)sender
@@ -240,6 +256,62 @@ static NSString *const kSectionTitleTrucks = @"Trucks";
 {
     return YES;
 }
+
+- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)sourceIndexPath
+        toIndexPath:(NSIndexPath *)destinationIndexPath {
+    TAVehicle *vehicle = nil;
+    if (sourceIndexPath.section == VehicleTypeCars) {
+        vehicle = [[[self.mutableCars objectAtIndex:sourceIndexPath.row] copy] autorelease];
+        [self.mutableCars removeObjectAtIndex:sourceIndexPath.row];
+        [self.mutableCars insertObject:vehicle atIndex:destinationIndexPath.row];
+    }
+    else if (sourceIndexPath.section == VehicleTypeBikes) {
+        vehicle = [[[self.mutableBikes objectAtIndex:sourceIndexPath.row] copy] autorelease];
+        [self.mutableBikes removeObjectAtIndex:sourceIndexPath.row];
+        [self.mutableBikes insertObject:vehicle atIndex:destinationIndexPath.row];
+    }
+    else if (sourceIndexPath.section == VehicleTypeTrucks) {
+        vehicle = [[[self.mutableTrucks objectAtIndex:sourceIndexPath.row] copy] autorelease];
+        [self.mutableTrucks removeObjectAtIndex:sourceIndexPath.row];
+        [self.mutableTrucks insertObject:vehicle atIndex:destinationIndexPath.row];
+    }
+    // Save changes
+        NSMutableArray *commonArray = [NSMutableArray arrayWithArray:self.mutableCars];
+        [commonArray addObjectsFromArray:self.mutableBikes];
+        [commonArray addObjectsFromArray:self.mutableTrucks];
+        [TAPreferences standardPreferences].vehicles = [[commonArray copy] autorelease];
+}
+
+- (NSIndexPath *)tableView:(UITableView *)tableView
+        targetIndexPathForMoveFromRowAtIndexPath:(NSIndexPath *)sourceIndexPath
+        toProposedIndexPath:(NSIndexPath *)proposedDestinationIndexPath
+{
+    NSUInteger sectionCount = 0;
+    if (sourceIndexPath.section == VehicleTypeCars) {
+        sectionCount = [self.mutableCars count];
+    }
+    else if (sourceIndexPath.section == VehicleTypeBikes) {
+        sectionCount = [self.mutableBikes count];
+    }
+    else if (sourceIndexPath.section == VehicleTypeTrucks) {
+        sectionCount = [self.mutableTrucks count];
+    }
+    if (sourceIndexPath.section != proposedDestinationIndexPath.section) {
+        NSUInteger rowInSourceSection =
+             (sourceIndexPath.section > proposedDestinationIndexPath.section) ?
+               0 : sectionCount - 1;
+        return [NSIndexPath indexPathForRow:rowInSourceSection inSection:sourceIndexPath.section];
+    } else if (proposedDestinationIndexPath.row >= sectionCount) {
+        return [NSIndexPath indexPathForRow:sectionCount - 1 inSection:sourceIndexPath.section];
+    }
+    // Allow the proposed destination.
+    return proposedDestinationIndexPath;
+}
+
+
+
+
+
 
 #pragma mark UITableViewDataSource Methods
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView

@@ -28,12 +28,18 @@
                     <rect key="frame" x="0.0" y="524" width="320" height="44"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                     <items>
-                        <barButtonItem title="Options" id="nO2-4w-5ZV">
+                        <barButtonItem title="Update" id="nO2-4w-5ZV">
                             <connections>
                                 <action selector="didTouchOptionsBarButtonItem:" destination="-1" id="MMQ-Nk-ask"/>
                             </connections>
                         </barButtonItem>
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="yhJ-SY-2F1"/>
+                        <barButtonItem title="Reorder" id="HxD-dn-waE">
+                            <connections>
+                                <action selector="didTouchReorderBarButtonItem:" destination="-1" id="2U1-lA-sMO"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem style="plain" systemItem="flexibleSpace" id="5V5-ih-LeZ"/>
                         <barButtonItem systemItem="add" id="Djt-p4-Sd1">
                             <connections>
                                 <action selector="didTouchAddBarButtonItem:" destination="-1" id="b0a-Aq-LRj"/>
