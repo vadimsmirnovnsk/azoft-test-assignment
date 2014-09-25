@@ -35,6 +35,12 @@ static NSString *const kCarryingCapacityKgKey = @"carryingCapacityKg";
 // Bike Keys
 static NSString *const kBikeTypeKey = @"bikeType";
 
+typedef NS_ENUM(NSUInteger, VehicleType) {
+    VehicleTypeCars = 0,
+    VehicleTypeBikes = 1,
+    VehicleTypeTrucks = 2,
+};
+
 
 @class TACar;
 @class TABike;

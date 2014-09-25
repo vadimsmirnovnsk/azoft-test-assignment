@@ -19,12 +19,6 @@ static NSString *const kSectionTitleCars = @"Cars";
 static NSString *const kSectionTitleBikes = @"Bikes";
 static NSString *const kSectionTitleTrucks = @"Trucks";
 
-typedef NS_ENUM(NSUInteger, SectionType) {
-    SectionTypeCars = 0,
-    SectionTypeBikes = 1,
-    SectionTypeTrucks = 2,
-};
-
 
 #pragma mark - TAVehiclesVC Extension
 
@@ -135,6 +129,19 @@ typedef NS_ENUM(NSUInteger, SectionType) {
 #pragma mark Action
 - (IBAction)didTouchAddBarButtonItem:(UIBarButtonItem *)sender
 {
+    TAEditVehicleVC *const editVC =
+        [[TAEditVehicleVC alloc] initWithVehicle:[NSDictionary dictionary] indexPath:nil];
+    
+    
+    editVC.delegate = self;
+    
+    UINavigationController *const navigationController =
+        [[UINavigationController alloc] initWithRootViewController:editVC];
+    
+    [self presentViewController:navigationController animated:YES completion:NULL];
+    
+    [navigationController release];
+    [editVC release];
 }
 
 - (IBAction)didTouchOptionsBarButtonItem:(UIBarButtonItem *)sender
@@ -145,14 +152,14 @@ typedef NS_ENUM(NSUInteger, SectionType) {
 - (void) editVehicleVC:(TAEditVehicleVC *)sender
     didFinishedWithVehicle:(id)vehicle indexPath:(NSIndexPath *)indexPath
 {
-    if (vehicle) {
-        if (indexPath.section == SectionTypeCars) {
+    if (indexPath) {
+        if (indexPath.section == VehicleTypeCars) {
             [self.mutableCars insertObject:vehicle atIndex:indexPath.row];
         }
-        else if (indexPath.section == SectionTypeBikes) {
+        else if (indexPath.section == VehicleTypeBikes) {
             [self.mutableBikes insertObject:vehicle atIndex:indexPath.row];
         }
-        else if (indexPath.section == SectionTypeTrucks) {
+        else if (indexPath.section == VehicleTypeTrucks) {
             [self.mutableTrucks insertObject:vehicle atIndex:indexPath.row];
         }
         // Save changes.
@@ -169,15 +176,15 @@ typedef NS_ENUM(NSUInteger, SectionType) {
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     TAVehicle *vehicle = nil;
-    if (indexPath.section == SectionTypeCars) {
+    if (indexPath.section == VehicleTypeCars) {
         vehicle = [[[self.mutableCars objectAtIndex:indexPath.row] copy] autorelease];
         [self.mutableCars removeObject:vehicle];
     }
-    else if (indexPath.section == SectionTypeBikes) {
+    else if (indexPath.section == VehicleTypeBikes) {
         vehicle = [[[self.mutableBikes objectAtIndex:indexPath.row] copy] autorelease];
         [self.mutableBikes removeObject:vehicle];
     }
-    else if (indexPath.section == SectionTypeTrucks) {
+    else if (indexPath.section == VehicleTypeTrucks) {
         vehicle = [[[self.mutableTrucks objectAtIndex:indexPath.row] copy] autorelease];
         [self.mutableTrucks removeObject:vehicle];
     }
@@ -202,15 +209,15 @@ typedef NS_ENUM(NSUInteger, SectionType) {
 {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
     TAVehicle *vehicle = nil;
-    if (indexPath.section == SectionTypeCars) {
+    if (indexPath.section == VehicleTypeCars) {
         vehicle = [[[self.mutableCars objectAtIndex:indexPath.row] copy] autorelease];
         [self.mutableCars removeObject:vehicle];
     }
-    else if (indexPath.section == SectionTypeBikes) {
+    else if (indexPath.section == VehicleTypeBikes) {
         vehicle = [[[self.mutableBikes objectAtIndex:indexPath.row] copy] autorelease];
         [self.mutableBikes removeObject:vehicle];
     }
-    else if (indexPath.section == SectionTypeTrucks) {
+    else if (indexPath.section == VehicleTypeTrucks) {
         vehicle = [[[self.mutableTrucks objectAtIndex:indexPath.row] copy] autorelease];
         [self.mutableTrucks removeObject:vehicle];
     }
@@ -242,13 +249,13 @@ typedef NS_ENUM(NSUInteger, SectionType) {
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
-if (section == SectionTypeCars) {
+if (section == VehicleTypeCars) {
         return [kSectionTitleCars autorelease];
     }
-    else if (section == SectionTypeBikes) {
+    else if (section == VehicleTypeBikes) {
         return [kSectionTitleBikes autorelease];
     }
-    else if (section == SectionTypeTrucks) {
+    else if (section == VehicleTypeTrucks) {
         return [kSectionTitleTrucks autorelease];
     }
     else return nil;
@@ -262,17 +269,17 @@ if (section == SectionTypeCars) {
         tableViewCell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1
                                                reuseIdentifier:userCellId] autorelease];
     }
-    if(indexPath.section == SectionTypeCars) {
+    if(indexPath.section == VehicleTypeCars) {
         NSDictionary *vehicle = self.mutableCars[indexPath.row];
         tableViewCell.textLabel.text = vehicle[kManufacturerKey];
         tableViewCell.detailTextLabel.text = vehicle[kModelKey];
     }
-    else if(indexPath.section == SectionTypeBikes) {
+    else if(indexPath.section == VehicleTypeBikes) {
         NSDictionary *vehicle = self.mutableBikes[indexPath.row];
         tableViewCell.textLabel.text = vehicle[kManufacturerKey];
         tableViewCell.detailTextLabel.text = vehicle[kModelKey];
     }
-    else if(indexPath.section == SectionTypeTrucks) {
+    else if(indexPath.section == VehicleTypeTrucks) {
         NSDictionary *vehicle = self.mutableTrucks[indexPath.row];
         tableViewCell.textLabel.text = vehicle[kManufacturerKey];
         tableViewCell.detailTextLabel.text = vehicle[kModelKey];
@@ -282,13 +289,13 @@ if (section == SectionTypeCars) {
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    if (section == SectionTypeCars) {
+    if (section == VehicleTypeCars) {
         return [self.mutableCars count];
     }
-    else if (section == SectionTypeBikes) {
+    else if (section == VehicleTypeBikes) {
         return [self.mutableBikes count];
     }
-    else if (section == SectionTypeTrucks) {
+    else if (section == VehicleTypeTrucks) {
         return [self.mutableTrucks count];
     }
     else return 0;

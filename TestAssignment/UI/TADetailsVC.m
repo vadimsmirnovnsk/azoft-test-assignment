@@ -10,15 +10,34 @@
 #import "TAVehicle.h"
 
 
+#pragma mark - TADetailsVC Implementation
+
+// Abstract class
 @implementation TADetailsVC
+
++ (id) detailVCWithVehicleType:(NSString *)vehicleType
+{
+    if ([vehicleType isEqualToString:kVehicleTypeCar]) {
+        return [[[TACarVC alloc] init] autorelease];
+    }
+    else if ([vehicleType isEqualToString:kVehicleTypeBike]) {
+        return [[[TABikeVC alloc] init] autorelease];
+    }
+    else if ([vehicleType isEqualToString:kVehicleTypeTruck]) {
+        return[[[TATruckVC alloc] init] autorelease];
+    }
+    else return [[[TACarVC alloc] init] autorelease];
+}
 
 - (void)textFieldWillEndEditing:(UITextField *)textField
 {
-    NSLog(@"Abstract methode isn't implemented in child-class.");
+    NSLog(@"Abstract method isn't implemented in child-class.");
 }
 
 @end
 
+
+#pragma mark - TACarVC Extension
 
 @interface TACarVC ()
 
@@ -28,6 +47,8 @@
 
 @end
 
+
+#pragma mark - TACarVC Implementation
 
 @implementation TACarVC
 
@@ -65,12 +86,16 @@
 @end
 
 
+#pragma mark - TABikeVC Extension
+
 @interface TABikeVC ()
 
 @property (nonatomic, unsafe_unretained) IBOutlet UITextField *bikeTypeField;
 
 @end
 
+
+#pragma mark - TABikeVC Implementation
 
 @implementation TABikeVC
 
@@ -92,6 +117,8 @@
 @end
 
 
+#pragma mark - TATruckVC Extansion
+
 @interface TATruckVC ()
 
 @property (nonatomic, unsafe_unretained) IBOutlet UITextField *handDriveField;
@@ -100,6 +127,8 @@
 
 @end
 
+
+#pragma mark - TATruckVC Implementation
 
 @implementation TATruckVC
 
