@@ -1,6 +1,11 @@
 Azoft iOS Test Assignment 2014
 =====================
 
+Restrictions:
+-----
+1. UI constructed only for iPhone 4"-wide screens.
+2. Please check the TestAssignment.xcworkspace - file for starting project.
+
 Tasks:
 -----
 1. Getting JSON-file from http://azcltd.com/testTask/iOS/list.json at first apllication-start.
