@@ -142,10 +142,25 @@ typedef NS_ENUM(NSUInteger, SectionType) {
 }
 
 #pragma mark TAEditVehicleVCDelegate Methods
-- (void) editVehicleVC:(TAEditVehicleVC *)sender didFinishedWithVehicle:(id)vehicle
+- (void) editVehicleVC:(TAEditVehicleVC *)sender
+    didFinishedWithVehicle:(id)vehicle indexPath:(NSIndexPath *)indexPath
 {
     if (vehicle) {
-    
+        if (indexPath.section == SectionTypeCars) {
+            [self.mutableCars insertObject:vehicle atIndex:indexPath.row];
+        }
+        else if (indexPath.section == SectionTypeBikes) {
+            [self.mutableBikes insertObject:vehicle atIndex:indexPath.row];
+        }
+        else if (indexPath.section == SectionTypeTrucks) {
+            [self.mutableTrucks insertObject:vehicle atIndex:indexPath.row];
+        }
+        // Save changes.
+        NSMutableArray *commonArray = [NSMutableArray arrayWithArray:self.mutableCars];
+        [commonArray addObjectsFromArray:self.mutableBikes];
+        [commonArray addObjectsFromArray:self.mutableTrucks];
+        [TAPreferences standardPreferences].vehicles = [[commonArray copy] autorelease];
+        [self.tableView reloadData];
     }
     [self dismissViewControllerAnimated:YES completion:NULL];
 }
@@ -155,17 +170,21 @@ typedef NS_ENUM(NSUInteger, SectionType) {
 {
     TAVehicle *vehicle = nil;
     if (indexPath.section == SectionTypeCars) {
-        vehicle = [self.mutableCars objectAtIndex:indexPath.row];
+        vehicle = [[[self.mutableCars objectAtIndex:indexPath.row] copy] autorelease];
+        [self.mutableCars removeObject:vehicle];
     }
     else if (indexPath.section == SectionTypeBikes) {
-        vehicle = [self.mutableBikes objectAtIndex:indexPath.row];
+        vehicle = [[[self.mutableBikes objectAtIndex:indexPath.row] copy] autorelease];
+        [self.mutableBikes removeObject:vehicle];
     }
     else if (indexPath.section == SectionTypeTrucks) {
-        vehicle = [self.mutableTrucks objectAtIndex:indexPath.row];
+        vehicle = [[[self.mutableTrucks objectAtIndex:indexPath.row] copy] autorelease];
+        [self.mutableTrucks removeObject:vehicle];
     }
 
     TAEditVehicleVC *const editVC =
-        [[TAEditVehicleVC alloc] initWithVehicle:vehicle];
+        [[TAEditVehicleVC alloc] initWithVehicle:vehicle indexPath:indexPath];
+    
     
     editVC.delegate = self;
     
@@ -177,6 +196,42 @@ typedef NS_ENUM(NSUInteger, SectionType) {
     
     [navigationController release];
     [editVC release];
+}
+
+- (void) tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (editingStyle == UITableViewCellEditingStyleDelete) {
+    TAVehicle *vehicle = nil;
+    if (indexPath.section == SectionTypeCars) {
+        vehicle = [[[self.mutableCars objectAtIndex:indexPath.row] copy] autorelease];
+        [self.mutableCars removeObject:vehicle];
+    }
+    else if (indexPath.section == SectionTypeBikes) {
+        vehicle = [[[self.mutableBikes objectAtIndex:indexPath.row] copy] autorelease];
+        [self.mutableBikes removeObject:vehicle];
+    }
+    else if (indexPath.section == SectionTypeTrucks) {
+        vehicle = [[[self.mutableTrucks objectAtIndex:indexPath.row] copy] autorelease];
+        [self.mutableTrucks removeObject:vehicle];
+    }
+        // Save changes
+        NSMutableArray *commonArray = [NSMutableArray arrayWithArray:self.mutableCars];
+        [commonArray addObjectsFromArray:self.mutableBikes];
+        [commonArray addObjectsFromArray:self.mutableTrucks];
+        [TAPreferences standardPreferences].vehicles = [[commonArray copy] autorelease];
+    
+        [tableView beginUpdates];
+        
+        [tableView deleteRowsAtIndexPaths:@[indexPath]
+            withRowAnimation:UITableViewRowAnimationAutomatic];
+        
+        [tableView endUpdates];
+    }
+}
+
+- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return YES;
 }
 
 #pragma mark UITableViewDataSource Methods

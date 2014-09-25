@@ -11,7 +11,10 @@
 @interface TADetailsVC : UIViewController
 
 @property (nonatomic, unsafe_unretained) id vehicle;
+@property (nonatomic, unsafe_unretained) id editedVehicle;
 @property (nonatomic, unsafe_unretained) id<UITextFieldDelegate> textFieldDelegate;
+
+- (void)textFieldWillEndEditing:(UITextField *)textField;
 
 @end
 

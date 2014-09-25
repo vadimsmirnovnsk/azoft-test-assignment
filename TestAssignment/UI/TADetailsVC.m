@@ -10,10 +10,13 @@
 #import "TAVehicle.h"
 
 
-@interface TADetailsVC ()
-@end
-
 @implementation TADetailsVC
+
+- (void)textFieldWillEndEditing:(UITextField *)textField
+{
+    NSLog(@"Abstract methode isn't implemented in child-class.");
+}
+
 @end
 
 
@@ -25,22 +28,8 @@
 
 @end
 
+
 @implementation TACarVC
-
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
-}
-
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
-    // Do any additional setup after loading the view from its nib.
-}
 
 - (void)viewWillAppear:(BOOL)animated
 {
@@ -56,15 +45,21 @@
     self.doorsField.delegate = self.textFieldDelegate;
 }
 
-- (void)didReceiveMemoryWarning
+- (void)textFieldWillEndEditing:(UITextField *)textField
 {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
-- (void)dealloc
-{
-    [super dealloc];
+    if ([textField isEqual:self.handDriveField]) {
+        self.editedVehicle[kHandDriveKey] = self.handDriveField.text;
+    }
+    else if ([textField isEqual:self.seatsCountField]) {
+        if ([self.seatsCountField.text integerValue]) {
+            self.editedVehicle[kSeatsCountKey] = @([self.seatsCountField.text integerValue]);
+        }
+    }
+    else if ([textField isEqual:self.doorsField]) {
+        if ([self.doorsField.text integerValue]) {
+            self.editedVehicle[kDoorsKey] = @([self.doorsField.text integerValue]);
+        }
+    }
 }
 
 @end
@@ -79,21 +74,6 @@
 
 @implementation TABikeVC
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
-}
-
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
-    // Do any additional setup after loading the view from its nib.
-}
-
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
@@ -102,15 +82,11 @@
     self.bikeTypeField.delegate = self.textFieldDelegate;
 }
 
-- (void)didReceiveMemoryWarning
+- (void)textFieldWillEndEditing:(UITextField *)textField
 {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
-- (void)dealloc
-{
-    [super dealloc];
+    if ([textField isEqual:self.bikeTypeField]) {
+        self.editedVehicle[kBikeTypeKey] = self.bikeTypeField.text;
+    }
 }
 
 @end
@@ -127,21 +103,6 @@
 
 @implementation TATruckVC
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
-}
-
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
-    // Do any additional setup after loading the view from its nib.
-}
-
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
@@ -156,15 +117,22 @@
     self.carryingCapacityKgField.delegate = self.textFieldDelegate;
 }
 
-- (void)didReceiveMemoryWarning
+- (void)textFieldWillEndEditing:(UITextField *)textField
 {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
-- (void)dealloc
-{
-    [super dealloc];
+    if ([textField isEqual:self.handDriveField]) {
+        self.editedVehicle[kHandDriveKey] = self.handDriveField.text;
+    }
+    else if ([textField isEqual:self.seatsCountField]) {
+        if ([self.seatsCountField.text integerValue]) {
+            self.editedVehicle[kSeatsCountKey] = @([self.seatsCountField.text integerValue]);
+        }
+    }
+    else if ([textField isEqual:self.carryingCapacityKgField]) {
+        if ([self.carryingCapacityKgField.text integerValue]) {
+            self.editedVehicle[kCarryingCapacityKgKey] =
+                @([self.carryingCapacityKgField.text integerValue]);
+        }
+    }
 }
 
 @end

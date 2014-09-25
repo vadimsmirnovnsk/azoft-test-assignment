@@ -12,7 +12,8 @@
 @class TAEditVehicleVC;
 @protocol TAEditVehicleVCDelegate <NSObject>
 
-- (void) editVehicleVC:(TAEditVehicleVC *)sender didFinishedWithVehicle:(id)vehicle;
+- (void) editVehicleVC:(TAEditVehicleVC *)sender didFinishedWithVehicle:(id)vehicle
+    indexPath:(NSIndexPath *)indexPath;
 
 @end
 
@@ -21,6 +22,6 @@
 
 @property (nonatomic, unsafe_unretained) id<TAEditVehicleVCDelegate> delegate;
 
-- (instancetype)initWithVehicle:(id)vehicle;
+- (instancetype)initWithVehicle:(id)vehicle indexPath:(NSIndexPath *)indexPath;
 
 @end

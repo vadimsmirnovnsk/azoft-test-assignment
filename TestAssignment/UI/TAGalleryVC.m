@@ -13,7 +13,10 @@
 static CGRect const kBackButtonFrame = (CGRect){10.f, 30.f, 50.f, 30.f};
 static CGRect const kStatusLabelFrame = (CGRect){0.f, 30.f, 320.f, 30.f};
 
-@interface TAGalleryVC ()<UIGestureRecognizerDelegate>
+
+#pragma mark - TAGalleryVC Extension
+
+@interface TAGalleryVC () <UIGestureRecognizerDelegate>
 
 @property (nonatomic, copy) NSArray *imagesNames;
 @property (nonatomic, strong) UIImageView *imageView;
@@ -26,8 +29,11 @@ static CGRect const kStatusLabelFrame = (CGRect){0.f, 30.f, 320.f, 30.f};
 @end
 
 
+#pragma mark - TAGalleryVC Implementation
+
 @implementation TAGalleryVC
 
+#pragma mark Lifecycle
 - (instancetype) initWithImagesArray:(NSArray *)imagesNames
 {
     if (self = [super init]) {
@@ -49,10 +55,10 @@ static CGRect const kStatusLabelFrame = (CGRect){0.f, 30.f, 320.f, 30.f};
     [self.imageButton addTarget:self action:@selector(didTouchImageButton:)
         forControlEvents:UIControlEventTouchUpInside];
     
-    self.imageView = [[UIImageView alloc]init];
+    self.imageView = [[[UIImageView alloc]init] autorelease];
     self.imageView.contentMode = UIViewContentModeScaleAspectFit;
     
-    self.nextImageView = [[UIImageView alloc] init];
+    self.nextImageView = [[[UIImageView alloc] init] autorelease];
     self.nextImageView.contentMode = UIViewContentModeScaleAspectFit;
     
     [self.view addSubview:self.imageView];
@@ -64,7 +70,7 @@ static CGRect const kStatusLabelFrame = (CGRect){0.f, 30.f, 320.f, 30.f};
     [self.backButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [self.backButton setTitleColor:[UIColor grayColor] forState:UIControlStateSelected];
     
-    self.statusLabel = [[UILabel alloc]initWithFrame:kStatusLabelFrame];
+    self.statusLabel = [[[UILabel alloc]initWithFrame:kStatusLabelFrame] autorelease];
     self.statusLabel.textColor = [UIColor lightGrayColor];
     self.statusLabel.textAlignment = NSTextAlignmentCenter;
     [self updateStatusLabel];
@@ -90,6 +96,25 @@ static CGRect const kStatusLabelFrame = (CGRect){0.f, 30.f, 320.f, 30.f};
     [swipeRightRecognizer release];
 }
 
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    self.imageButton.frame = self.view.frame;
+    self.imageView.frame = self.view.frame;
+    self.nextImageView.frame = (CGRect) {
+        [UIScreen mainScreen].bounds.origin.x + [UIScreen mainScreen].bounds.size.width,
+        [UIScreen mainScreen].bounds.origin.y,
+        [UIScreen mainScreen].bounds.size
+    };
+    self.backButton.frame = kBackButtonFrame;
+    self.navigationController.navigationBar.alpha = 0.f;
+    
+    [self.imageView setImageWithURL:[NSURL URLWithString:
+        [kBaseAPIURL stringByAppendingString:self.imagesNames[self.currentImageIndex]]]
+        placeholderImage:[UIImage imageNamed:@"loading_placeholder"]];
+}
+
+#pragma mark Inner
 - (void)updateStatusLabel
 {
     self.statusLabel.text = [NSString stringWithFormat:
@@ -202,24 +227,7 @@ static CGRect const kStatusLabelFrame = (CGRect){0.f, 30.f, 320.f, 30.f};
         }];
 }
 
-- (void)viewDidAppear:(BOOL)animated
-{
-    [super viewDidAppear:animated];
-    self.imageButton.frame = self.view.frame;
-    self.imageView.frame = self.view.frame;
-    self.nextImageView.frame = (CGRect) {
-        [UIScreen mainScreen].bounds.origin.x + [UIScreen mainScreen].bounds.size.width,
-        [UIScreen mainScreen].bounds.origin.y,
-        [UIScreen mainScreen].bounds.size
-    };
-    self.backButton.frame = kBackButtonFrame;
-    self.navigationController.navigationBar.alpha = 0.f;
-    
-    [self.imageView setImageWithURL:[NSURL URLWithString:
-        [kBaseAPIURL stringByAppendingString:self.imagesNames[self.currentImageIndex]]]
-        placeholderImage:[UIImage imageNamed:@"loading_placeholder"]];
-}
-
+#pragma mark MRR
 - (void)dealloc
 {
     [_imagesNames release];
@@ -232,6 +240,8 @@ static CGRect const kStatusLabelFrame = (CGRect){0.f, 30.f, 320.f, 30.f};
     _imageView = nil;
     [_nextImageView release];
     _nextImageView = nil;
+    [_statusLabel release];
+    _statusLabel = nil;
     [super dealloc];
 }
 
