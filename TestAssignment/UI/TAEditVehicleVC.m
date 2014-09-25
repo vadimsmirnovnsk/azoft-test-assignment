@@ -23,8 +23,8 @@ static void *const EditVCContext = (void *)&EditVCContext;
 
 @interface TAEditVehicleVC () <UITextFieldDelegate, TAGalleryDelegate>
 
-@property (nonatomic, strong) id vehicle;
-@property (nonatomic, strong) id editedVehicle;
+@property (nonatomic, copy) id vehicle;
+@property (nonatomic, copy) id editedVehicle;
 @property (nonatomic, unsafe_unretained) IBOutlet UITextField *manufacturerField;
 @property (nonatomic, unsafe_unretained) IBOutlet UITextField *modelField;
 @property (nonatomic, unsafe_unretained) IBOutlet UITextField *horsePowerField;
@@ -32,7 +32,7 @@ static void *const EditVCContext = (void *)&EditVCContext;
 @property (nonatomic, unsafe_unretained) IBOutlet UISegmentedControl *vehicleTypeControl;
 @property (nonatomic, strong) TADetailsVC *detailsVC;
 @property (nonatomic, copy) NSIndexPath *indexPath;
-@property (nonatomic, strong) NSIndexPath *editedIndexPath;
+@property (nonatomic, copy) NSIndexPath *editedIndexPath;
 
 @end
 
@@ -45,8 +45,7 @@ static void *const EditVCContext = (void *)&EditVCContext;
 - (instancetype)initWithVehicle:(id)vehicle indexPath:(NSIndexPath *)indexPath
 {
     if (self = [super init]) {
-        _vehicle = vehicle;
-        [_vehicle retain];
+        _vehicle = [vehicle copy];
         _editedVehicle = [_vehicle mutableCopy];
         _indexPath = [indexPath copy];
         _editedIndexPath = [indexPath copy];
@@ -160,7 +159,7 @@ static void *const EditVCContext = (void *)&EditVCContext;
 {
     if (self.vehicle[kImagesKey]) {
         TAGalleryVC *galleryVC =
-        [[TAGalleryVC alloc]initWithImagesArray:self.vehicle[kImagesKey]];
+            [[[TAGalleryVC alloc]initWithImagesArray:self.vehicle[kImagesKey]] autorelease];
 
         galleryVC.view.frame = [UIScreen mainScreen].bounds;
         galleryVC.view.alpha = 0.f;
@@ -172,8 +171,6 @@ static void *const EditVCContext = (void *)&EditVCContext;
         [UIView animateWithDuration:0.3 animations:^{
             galleryVC.view.alpha = 1.f;
         }];
-        
-        [galleryVC release];
     }
 }
 

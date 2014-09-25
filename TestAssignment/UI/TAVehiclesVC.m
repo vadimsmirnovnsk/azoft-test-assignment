@@ -130,19 +130,16 @@ static NSString *const kReorderTitleSelected = @"Done!";
 #pragma mark Action
 - (IBAction)didTouchAddBarButtonItem:(UIBarButtonItem *)sender
 {
-    TAEditVehicleVC *const editVC =
-        [[TAEditVehicleVC alloc] initWithVehicle:[NSDictionary dictionary] indexPath:nil];
+    TAEditVehicleVC *const editVC = [[[TAEditVehicleVC alloc]
+        initWithVehicle:[NSDictionary dictionary] indexPath:nil] autorelease];
     
     
     editVC.delegate = self;
     
     UINavigationController *const navigationController =
-        [[UINavigationController alloc] initWithRootViewController:editVC];
+        [[[UINavigationController alloc] initWithRootViewController:editVC] autorelease];
     
     [self presentViewController:navigationController animated:YES completion:NULL];
-    
-    [navigationController release];
-    [editVC release];
 }
 
 - (IBAction)didTouchOptionsBarButtonItem:(UIBarButtonItem *)sender
@@ -206,19 +203,16 @@ static NSString *const kReorderTitleSelected = @"Done!";
     }
 
     TAEditVehicleVC *const editVC =
-        [[TAEditVehicleVC alloc] initWithVehicle:vehicle indexPath:indexPath];
+        [[[TAEditVehicleVC alloc] initWithVehicle:vehicle indexPath:indexPath] autorelease];
     
     
     editVC.delegate = self;
     
     UINavigationController *const navigationController =
-        [[UINavigationController alloc] initWithRootViewController:editVC];
+        [[[UINavigationController alloc] initWithRootViewController:editVC] autorelease];
     
     [self presentViewController:navigationController animated:YES completion:NULL];
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    
-    [navigationController release];
-    [editVC release];
 }
 
 - (void) tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath

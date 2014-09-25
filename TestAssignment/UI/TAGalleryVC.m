@@ -81,19 +81,16 @@ static CGRect const kStatusLabelFrame = (CGRect){0.f, 30.f, 320.f, 30.f};
     
     [self.view addSubview:self.backButton];
     
-    UISwipeGestureRecognizer *swipeLeftRecognizer = [[UISwipeGestureRecognizer alloc]
-        initWithTarget:self action:@selector(didSwipeLeftImage)];
-    UISwipeGestureRecognizer *swipeRightRecognizer = [[UISwipeGestureRecognizer alloc]
-        initWithTarget:self action:@selector(didSwipeRightImage)];
+    UISwipeGestureRecognizer *swipeLeftRecognizer = [[[UISwipeGestureRecognizer alloc]
+        initWithTarget:self action:@selector(didSwipeLeftImage)] autorelease];
+    UISwipeGestureRecognizer *swipeRightRecognizer = [[[UISwipeGestureRecognizer alloc]
+        initWithTarget:self action:@selector(didSwipeRightImage)] autorelease];
 
     [swipeLeftRecognizer setDirection: (UISwipeGestureRecognizerDirectionLeft)];
     [swipeRightRecognizer setDirection: (UISwipeGestureRecognizerDirectionRight)];
     
     [[self view] addGestureRecognizer:swipeLeftRecognizer];
     [[self view] addGestureRecognizer:swipeRightRecognizer];
-    
-    [swipeLeftRecognizer release];
-    [swipeRightRecognizer release];
 }
 
 - (void)viewDidAppear:(BOOL)animated
