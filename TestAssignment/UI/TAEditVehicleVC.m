@@ -18,11 +18,9 @@ static CGRect const kDetailsViewFrame = (CGRect){0.f, 212.f + 179.f, 320.f, 394.
 static CGFloat const kKeyboardY = 312.f;
 
 
-@interface TAEditVehicleVC () <UITextFieldDelegate>
+@interface TAEditVehicleVC () <UITextFieldDelegate, TAGalleryDelegate>
 
 @property (nonatomic, strong) id vehicle;
-@property (nonatomic, strong) TADetailsVC *detailsVC;
-@property (nonatomic, strong) TAGalleryVC *galleryVC;
 @property (nonatomic, unsafe_unretained) IBOutlet UITextField *manufacturerField;
 @property (nonatomic, unsafe_unretained) IBOutlet UITextField *modelField;
 @property (nonatomic, unsafe_unretained) IBOutlet UITextField *horsePowerField;
@@ -36,7 +34,7 @@ static CGFloat const kKeyboardY = 312.f;
 - (instancetype)initWithVehicle:(id)vehicle
 {
     if (self = [super init]) {
-        _vehicle = [vehicle copy];
+        _vehicle = vehicle;
     };
     return self;
 }
@@ -53,6 +51,7 @@ static CGFloat const kKeyboardY = 312.f;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
     if (!!self.navigationItem) {
         UIBarButtonItem *const cancelBarButtonItem =
             [[[UIBarButtonItem alloc]
@@ -68,21 +67,27 @@ static CGFloat const kKeyboardY = 312.f;
                                      action:@selector(didTouchSaveBarButtonItem:)] autorelease];
         [self.navigationItem setRightBarButtonItem:saveBarButtonItem];
     }
+    
+    TADetailsVC *detailsVC = nil;
     if ([self.vehicle[kVehicleTypeKey] isEqualToString:kVehicleTypeCar]) {
-        _detailsVC = [[TACarVC alloc] init];
+        detailsVC = [[TACarVC alloc] init];
     }
     else if ([self.vehicle[kVehicleTypeKey] isEqualToString:kVehicleTypeBike]) {
-        _detailsVC = [[TABikeVC alloc] init];
+        detailsVC = [[TABikeVC alloc] init];
     }
     else if ([self.vehicle[kVehicleTypeKey] isEqualToString:kVehicleTypeTruck]) {
-        _detailsVC = [[TATruckVC alloc] init];
+        detailsVC = [[TATruckVC alloc] init];
     }
-    _detailsVC.vehicle = self.vehicle;
-    _detailsVC.textFieldDelegate = self;
-    _detailsVC.view.frame = kDetailsViewFrame;
-    [self.view addSubview:_detailsVC.view];
-    [self addChildViewController:_detailsVC];
-    [_detailsVC didMoveToParentViewController:self];
+    
+    detailsVC.vehicle = self.vehicle;
+    detailsVC.textFieldDelegate = self;
+    detailsVC.view.frame = kDetailsViewFrame;
+    
+    [self.view addSubview:detailsVC.view];
+    [self addChildViewController:detailsVC];
+    [detailsVC didMoveToParentViewController:self];
+    
+    [detailsVC autorelease];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -123,7 +128,6 @@ static CGFloat const kKeyboardY = 312.f;
 }
 
 #pragma mark - Actions
-
 - (void)didTouchCancelBarButtonItem:(UIBarButtonItem *)sender
 {
     [self.delegate editVehicleVC:self didFinishedWithVehicle:self.vehicle];
@@ -135,18 +139,21 @@ static CGFloat const kKeyboardY = 312.f;
 
 - (IBAction)didTouchImageButton:(UIButton *)sender
 {
-    if (!self.galleryVC) {
-        self.galleryVC = [[TAGalleryVC alloc]initWithImagesArray:self.vehicle[kImagesKey]];
-    }
-    // self.galleryVC.view.frame = self.imageView.frame;
-    self.galleryVC.view.frame = [UIScreen mainScreen].bounds;
-    self.galleryVC.view.alpha = 0.f;
-    [self.view addSubview:self.galleryVC.view];
-    [self addChildViewController:self.galleryVC];
-    [self.galleryVC didMoveToParentViewController:self];
+    TAGalleryVC *galleryVC =
+        [[TAGalleryVC alloc]initWithImagesArray:self.vehicle[kImagesKey]];
+
+    galleryVC.view.frame = [UIScreen mainScreen].bounds;
+    galleryVC.view.alpha = 0.f;
+    galleryVC.delegate = self;
+    [self.view addSubview:galleryVC.view];
+    [self addChildViewController:galleryVC];
+    [galleryVC didMoveToParentViewController:self];
+    
     [UIView animateWithDuration:0.3 animations:^{
-        self.galleryVC.view.alpha = 1.f;
+        galleryVC.view.alpha = 1.f;
     }];
+    
+    [galleryVC release];
 }
 
 #pragma mark UITextFieldDelegate Protocol Methods
@@ -163,15 +170,22 @@ static CGFloat const kKeyboardY = 312.f;
     return YES;
 }
 
+#pragma mark TAGalleryDelegate Protocol Methods
+- (void) gallery:(TAGalleryVC *)sender didFinishedWithIndex:(NSUInteger)index
+{
+    [UIView animateWithDuration:0.3 animations:^{
+        sender.view.alpha = 0.f;
+        self.navigationController.navigationBar.alpha = 1.f;
+    } completion:^(BOOL finished) {
+        
+    }];
+}
+
 #pragma mark MRR
 - (void)dealloc
 {
     [_vehicle release];
     _vehicle = nil;
-    [_detailsVC release];
-    _detailsVC = nil;
-    [_galleryVC release];
-    _galleryVC = nil;
     [super dealloc];
 }
 

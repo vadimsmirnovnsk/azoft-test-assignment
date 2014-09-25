@@ -40,7 +40,7 @@
     static __strong TAServerAPIController *instance;
     static dispatch_once_t token = 0;
     dispatch_once(&token, ^{
-       instance = [[self alloc]init];
+       instance = [[[self alloc]init] autorelease];
     });
     return instance;
 }

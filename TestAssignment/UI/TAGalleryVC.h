@@ -8,7 +8,17 @@
 
 #import <UIKit/UIKit.h>
 
+@class TAGalleryVC;
+@protocol TAGalleryDelegate <NSObject>
+
+- (void)gallery:(TAGalleryVC *)sender didFinishedWithIndex:(NSUInteger)index;
+
+@end
+
+
 @interface TAGalleryVC : UIViewController
+
+@property (nonatomic, unsafe_unretained) id<TAGalleryDelegate> delegate;
 
 - (instancetype) initWithImagesArray:(NSArray *)imagesNames;
 

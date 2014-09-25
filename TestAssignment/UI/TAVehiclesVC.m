@@ -65,12 +65,6 @@ typedef NS_ENUM(NSUInteger, SectionType) {
     [self loadVehicles];
 }
 
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
 #pragma mark Inner Methods
 - (void)loadVehicles
 {
@@ -93,18 +87,15 @@ typedef NS_ENUM(NSUInteger, SectionType) {
         // Get json from server
         __unsafe_unretained typeof(self) blockSelf = self;
         [[TAServerAPIController sharedController] getJSONWithSuccessBlock:^(NSDictionary *jsonDictionary) {
-            if (jsonDictionary[@"vehicles"]) {
-                NSArray *vehicles = jsonDictionary[@"vehicles"];
-                [TAPreferences standardPreferences].downloaded = YES;
-                [TAPreferences standardPreferences].vehicles = vehicles;
-                blockSelf.mutableVehicles = [[vehicles mutableCopy] autorelease];
-                for (NSDictionary *vehicle in vehicles) {
-                    if (vehicle[kVehicleTypeKey]) {
-                        NSLog(@"%@", [TAVehicle vehicleWithParameters:vehicle]);
-                    }
+            @autoreleasepool {
+                if (jsonDictionary[@"vehicles"]) {
+                    [TAPreferences standardPreferences].downloaded = YES;
+                    [TAPreferences standardPreferences].vehicles = jsonDictionary[@"vehicles"];
+                    blockSelf.mutableVehicles =
+                        [[[TAPreferences standardPreferences].vehicles mutableCopy] autorelease];
+                    [grayView removeFromSuperview];
+                    [blockSelf sortVehicles];
                 }
-                [grayView removeFromSuperview];
-                [blockSelf sortVehicles];
             }
         } failureBlock:^(NSError *error) {
             if (!!error) {
@@ -114,7 +105,8 @@ typedef NS_ENUM(NSUInteger, SectionType) {
         }];
     }
     else {
-        self.mutableVehicles = [[[TAPreferences standardPreferences].vehicles mutableCopy] autorelease];
+        self.mutableVehicles =
+            [[[TAPreferences standardPreferences].vehicles mutableCopy] autorelease];
         [self sortVehicles];
     }
 }
@@ -174,14 +166,17 @@ typedef NS_ENUM(NSUInteger, SectionType) {
 
     TAEditVehicleVC *const editVC =
         [[TAEditVehicleVC alloc] initWithVehicle:vehicle];
+    
     editVC.delegate = self;
     
     UINavigationController *const navigationController =
         [[UINavigationController alloc] initWithRootViewController:editVC];
+    
     [self presentViewController:navigationController animated:YES completion:NULL];
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    [editVC release];
+    
     [navigationController release];
+    [editVC release];
 }
 
 #pragma mark UITableViewDataSource Methods
